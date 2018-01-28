@@ -3,6 +3,9 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 
 class AddShortLinkController extends CI_Controller {
 
+    /**
+     * AddShortLinkController constructor.
+     */
     public function __construct()
     {
         parent::__construct();
@@ -10,6 +13,9 @@ class AddShortLinkController extends CI_Controller {
         $this->load->model('ShortLinkModel');
     }
 
+    /**
+     * Добавить новую ссылку в базу данных, возвращает ответ для AJAX-запроса
+     */
     public function store()
     {
         $full_url = $_POST['full_url'];
@@ -30,6 +36,11 @@ class AddShortLinkController extends CI_Controller {
         echo $shortLink;
     }
 
+    /**
+     * Создание рандомного ключа для короткой ссылки (+ проверка на существование в БД)
+     *
+     * @return bool|string
+     */
     public function createShortLink()
     {
         $h = "QqWwEeRrTtYyUuIiOoPpAaSsDdFfGgHhJjKkLlZzXxCcVvBbNnMm1234567890";
@@ -38,7 +49,7 @@ class AddShortLinkController extends CI_Controller {
 
         do {
             $shortLink = substr(str_shuffle($h), 0, 5);
-            $query = $this->ShortLinkModel->getShortLink($shortLink);
+            $query = $this->ShortLinkModel->getFullUrl($shortLink);
             if(empty($query)) {
                 $isUnique = TRUE;
             }
